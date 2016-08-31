@@ -10,10 +10,10 @@ This repository helps you install DbFace in docker container.
 
 Please get more information from:
 
-Website: https://www.dbface.com
-Facebook: https://www.facebook.com/dbface
-Twitter: https://www.twitter.com/dbface
-Documentation: https://www.dbface.com/documents/
+* Website: https://www.dbface.com
+* Facebook: https://www.facebook.com/dbface
+* Twitter: https://www.twitter.com/dbface
+* Documentation: https://www.dbface.com/documents/
 
 ## Install Docker
 
@@ -24,13 +24,13 @@ https://docs.docker.com/engine/installation/#installation
 ## Install DbFace
 
 ```
-docker pull dbface/docker
+docker pull dbface/dbface-docker
 ```
 
 ## Run
 
 ```
-docker run -d --name dbface -p 80:80 -t dbface/docker
+docker run -d --name dbface -p 80:80 -t dbface/dbface-docker
 ```
 
 ## Enjoy
