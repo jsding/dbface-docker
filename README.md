@@ -24,13 +24,13 @@ https://docs.docker.com/engine/installation/#installation
 ## Install DbFace
 
 ```
-docker pull dbface/dbface-docker
+sudo docker pull dbface/dbface-docker
 ```
 
 ## Run
 
 ```
-docker run -d --name dbface -p 80:80 -t dbface/dbface-docker
+sudo docker run -d --name dbface -p 80:80 -t dbface/dbface-docker
 ```
 
 ## Enjoy

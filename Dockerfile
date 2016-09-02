@@ -1,3 +1,7 @@
+# DbFace On-premise
+#
+# VERSION 5.8
+
 FROM ubuntu:12.04
 
 MAINTAINER DbFace "support@dbface.com"
