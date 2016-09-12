@@ -1,6 +1,6 @@
 # DbFace On-premise
 #
-# VERSION 5.9 (20160910)
+# VERSION 5.9 (20160912)
 
 FROM ubuntu:12.04
 
