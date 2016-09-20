@@ -47,7 +47,7 @@ Now you can access your app via  http://192.168.99.100
 
 ## License
 
-DbFace On-premise provides 7 days trial, after the trial period, you need to get a license to keep it running. Checkout the following page to get more information:
+DbFace On-premise provides 15 days trial, after the trial period, you need to get a license to keep it running. Checkout the following page to get more information:
 
 http://www.dbface.com/pricing
 
