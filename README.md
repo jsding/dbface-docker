@@ -14,6 +14,7 @@ Please get more information from:
 * Facebook: https://www.facebook.com/dbface
 * Twitter: https://www.twitter.com/dbface
 * Documentation: https://www.dbface.com/documents/
+* Manual Installation: http://www.dbfacephp.com/download/
 
 ## Install Docker
 
