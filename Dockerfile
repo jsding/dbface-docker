@@ -1,8 +1,8 @@
 # DbFace On-premise
 #
-# VERSION 5.9 (20160923 08:50)
+# VERSION 6.0 (20160924 08:50)
 
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 
 MAINTAINER DbFace "support@dbface.com"
 
@@ -42,7 +42,7 @@ RUN mkdir /root/ssl; \
     openssl req -new -key /root/ssl/local.key -out /root/ssl/local.csr -subj "/C=DE/ST=BW/L=FREIBURG/O=Jankowfsky AG/OU=Development/CN=localhost"; \
     openssl x509 -req -days 365 -in /root/ssl/local.csr -signkey /root/ssl/local.key -out /root/ssl/local.crt
 
-# Apache
+# Install apache
 RUN apt-get -qqy install apache2 apache2-utils
 RUN a2enmod rewrite
 RUN a2enmod ssl
@@ -51,47 +51,18 @@ RUN echo "ServerName localhost" | tee /etc/apache2/conf.d/fqdn
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
-# Add latest php version
-RUN add-apt-repository ppa:ondrej/apache2
-RUN add-apt-repository ppa:ondrej/php5-oldstable && apt-get update
-
-# PHP
+# Install php
 RUN apt-get -qqy install php5 php5-cli php5-mysql php5-sqlite php5-curl php5-dev php5-gd php-pear php-apc php5-xdebug libapache2-mod-php5
 
-# Install phpbrew
-RUN apt-get update
-RUN apt-get install -y php5 php5-dev php-pear autoconf automake curl build-essential \
-    libxslt1-dev re2c libxml2 libxml2-dev php5-cli bison libbz2-dev libreadline-dev \
-    libfreetype6 libfreetype6-dev libpng12-0 libpng12-dev libjpeg-dev libjpeg8-dev libjpeg8  libgd-dev libgd3 libxpm4 \
-    libssl-dev openssl \
-    gettext libgettextpo-dev libgettextpo0 \
-    libicu-dev \
-    libmhash2 libmhash-dev \
-    libmcrypt4 libmcrypt-dev \
-    libpcre3-dev libpcre++-dev
-
-RUN curl -L -O https://github.com/phpbrew/phpbrew/raw/master/phpbrew
-RUN chmod +x phpbrew
-
-# Move phpbrew to somewhere can be found by your $PATH
-RUN mv phpbrew /usr/bin/phpbrew
-
-ADD conf/php/pbconfig.yaml /tmp/config.yaml
-RUN phpbrew init --config=/tmp/config.yaml
-RUN echo "source /root/.phpbrew/bashrc" >> /root/.bashrc
-RUN ln -s /.phpbrew /root/.phpbrew
-
-ADD conf/php/install_php /usr/bin/install_php
-RUN chmod +x /usr/bin/install_php
-
-# Install different php version
-ADD conf/php/modules /root/.phpbrew/modules
-
-# php 5.4
-RUN /usr/bin/install_php 5.4.40
+# Download ioncube loader
+RUN cd /var/www/html && \
+    wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz && \
+    tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
+    rm ioncube_loaders_lin_x86-64.tar.gz && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_5.5.so" > /etc/php5/apache2/php.ini
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3.amazonaws.com/dbface/v5/dbfacephp.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3.amazonaws.com/dbface/v5/dbface_php5.5.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache
 RUN mkdir -p /var/www/application/logs
@@ -104,12 +75,9 @@ RUN chmod -R 777 /var/www/user
 RUN chmod 777 /var/www/config/
 RUN chmod 777 /var/www/config/dbface.db
 
-
+# Run
 # Add supervisor config
 ADD conf/supervisor/startup.conf /etc/supervisor/conf.d/startup.conf
-ENV PHP_VERSION 5.4.40
-ENV PHP_XDEBUG 0
-ENV SQL_DIR /var/www/_sql
 
 ADD conf/scripts/startup.sh /usr/bin/startup_container
 RUN chmod +x /usr/bin/startup_container
@@ -120,7 +88,6 @@ RUN apt-get clean -y; \
     apt-get autoremove -y; \
     rm -rf /var/www/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
-
 
 VOLUME /var/www
 EXPOSE 22 80 443
