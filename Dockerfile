@@ -20,7 +20,6 @@ RUN apt-get -qqy install passwd supervisor git-core sudo unzip wget curl libfile
 
 # Set locale
 RUN apt-get -qqy install locales
-RUN locale-gen --purge de_DE de_DE.UTF-8
 RUN locale-gen --purge en_US en_US.UTF-8
 RUN dpkg-reconfigure locales
 ENV LC_ALL en_US.UTF-8
