@@ -1,6 +1,6 @@
 # DbFace On-premise
 #
-# VERSION 6.0 (20160929 12:15)
+# VERSION 6.1 (20161017 15:09)
 
 FROM ubuntu:14.04
 
@@ -51,7 +51,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
-RUN apt-get -qqy install php5 php5-cli php5-mysql php5-sqlite php5-curl php5-dev php5-gd php-pear php-apc php5-xdebug libapache2-mod-php5
+RUN apt-get -qqy install php5 php5-cli php5-mysql php5-sqlite php5-interbase php5-pgsql php5-curl php5-dev php5-gd php-pear php-apc libapache2-mod-php5
 
 # Download ioncube loader
 RUN cd /var/www/html && \
