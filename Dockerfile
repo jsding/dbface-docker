@@ -12,17 +12,7 @@ ENV HOME /root
 RUN apt-get update
 
 # Setup system and install tools
-RUN echo "initscripts hold" | dpkg --set-selections
-RUN apt-get -qqy install libreadline-gplv2-dev libfreetype6 apt-utils dialog postfix
-RUN echo "Europe/Berlin" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata
-RUN echo 'alias ll="ls -lah --color=auto"' >> /etc/bash.bashrc
-RUN apt-get -qqy install passwd supervisor git-core sudo unzip wget curl libfile-slurp-perl libmysql-diff-perl vim net-tools software-properties-common python-software-properties
-
-# Set locale
-RUN apt-get -qqy install locales
-RUN locale-gen --purge en_US en_US.UTF-8
-RUN dpkg-reconfigure locales
-ENV LC_ALL en_US.UTF-8
+RUN apt-get -qqy install passwd supervisor sudo unzip wget curl
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
@@ -63,16 +53,14 @@ RUN cd /var/www/html && \
 RUN rm -rf /var/www/index.html
 RUN wget https://s3.amazonaws.com/dbface/v5/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
-RUN mkdir -p /var/www/application/cache
-RUN mkdir -p /var/www/application/logs
-RUN mkdir -p /var/www/user
-
-RUN chmod -R 777 /var/www/application/cache
-RUN chmod -R 777 /var/www/application/logs
-RUN chmod -R 777 /var/www/user
-
-RUN chmod 777 /var/www/config/
-RUN chmod 777 /var/www/config/dbface.db
+RUN mkdir -p /var/www/application/cache && \
+    mkdir -p /var/www/application/logs && \
+    mkdir -p /var/www/user && \
+    chmod -R 777 /var/www/application/cache && \
+    chmod -R 777 /var/www/application/logs && \
+    chmod -R 777 /var/www/user && \
+    chmod -R 777 /var/www/config/ && \
+    chmod 777 /var/www/config/dbface.db
 
 # Run
 # Add supervisor config
@@ -87,7 +75,7 @@ RUN apt-get clean -y; \
     apt-get autoremove -y; \
     rm -rf /var/www/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
-
+    
 VOLUME /var/www
 EXPOSE 22 80 443
 
