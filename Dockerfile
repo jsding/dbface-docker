@@ -2,7 +2,7 @@
 #
 # VERSION 6.1 (20161017 15:09)
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
 
@@ -51,17 +51,17 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
-RUN apt-get -qqy install php5 php5-cli php5-mysql php5-sqlite php5-interbase php5-pgsql php5-curl php5-dev php5-gd php-pear php-apc libapache2-mod-php5
+RUN apt-get -qqy install php7.0 php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-gd libapache2-mod-php7.0
 
 # Download ioncube loader
 RUN cd /var/www/html && \
     wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_5.5.so" > /etc/php5/apache2/php.ini
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/apache2/php.ini
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3.amazonaws.com/dbface/v5/dbface_php5.5.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3.amazonaws.com/dbface/v5/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache
 RUN mkdir -p /var/www/application/logs
