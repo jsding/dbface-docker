@@ -51,7 +51,7 @@ RUN cd /var/www/html && \
     echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/apache2/php.ini
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3.amazonaws.com/dbface/v5/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3.amazonaws.com/dbface/v6/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache && \
     mkdir -p /var/www/application/logs && \
