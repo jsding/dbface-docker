@@ -57,4 +57,6 @@ http://www.dbface.com/pricing
 If you have any problems or questions about this image, please feel free to drop us a mail: support@dbface.com or post a new discussion on our forum: 
 https://plus.google.com/communities/103467353497379821094
 
+You can also open a new ticket : http://www.dbface.com/ticket/
+
 
