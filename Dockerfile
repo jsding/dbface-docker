@@ -1,6 +1,6 @@
 # DbFace On-premise
 #
-# VERSION 6.7 (20161229 09:55)
+# VERSION 6.7 (20170102 09:55)
 
 FROM ubuntu:16.04
 
