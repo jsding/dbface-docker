@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 6.9 (20170414 14:15)
+# VERSION 6.9 (20170415)
 
 FROM ubuntu:16.04
 
@@ -41,7 +41,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
-RUN apt-get -qqy install php7.0 php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-gd libapache2-mod-php7.0
+RUN apt-get -qqy install php7.0 php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-gd libapache2-mod-php7.0 php7.0-mongodb
 
 # Download ioncube loader
 RUN cd /var/www/html && \
