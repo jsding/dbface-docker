@@ -1,8 +1,8 @@
 # What is DbFace?
 
-DbFace is a super easy reports and dashboards builder for MySQL, PostgreSQL, SQL Server databases. 
+DbFace is a super easy reports and dashboards builder for MySQL, PostgreSQL, SQL Server, MongoDB databases. 
 
-You can also make your own API Connector to make DbFace work with No-SQL databases(MongoDb etc.).
+You can also make your own API Connector to make DbFace work with any application data sources.
 
 DbFace connects to your database and pull down data from it and show you chart reports, dashboards, storyboards.
 
@@ -14,12 +14,15 @@ Please get more information from:
 * Facebook: https://www.facebook.com/dbface
 * Twitter: https://www.twitter.com/dbface
 * Documentation: https://www.dbface.com/documents/
-* Manual Installation: http://www.dbface.com/download-dbface
+* Manual Installation: https://www.dbface.com/download-dbface
+
+## On-Demand  
+We also provide on-demand version, please follow the page below to get more information:
+https://www.dbface.com/pricing
 
 ## Install Docker
-
-Please refer this page to install Docker :
-
+You should already have the docker environment. 
+If not, please refer this page to install Docker :
 https://docs.docker.com/engine/installation/#installation
 
 ## Install DbFace
@@ -31,12 +34,12 @@ sudo docker pull dbface/dbface-docker
 ## Run
 
 ```
-sudo docker run -d --name dbface -p 80:80 -t dbface/dbface-docker
+sudo docker run -d --name dbface -p 8080:80 -t dbface/dbface-docker
 ```
 
 ## Enjoy
 
-Find your docker IP
+If you are on windows, find your docker IP
 ```
 docker-machine ip default
 ```
@@ -44,19 +47,18 @@ This should output your service IP, it might be:
 ```
 192.168.99.100
 ```
-Now you can access your app via  http://192.168.99.100
+Now you can access your app via  http://192.168.99.100:8080
 
 ## License
 
 DbFace On-premise provides 15 days trial, after the trial period, you need to get a license to keep it running. Checkout the following page to get more information:
 
-http://www.dbface.com/pricing
+https://www.dbface.com/pricing
 
 ## Issues
-
 If you have any problems or questions about this image, please feel free to drop us a mail: support@dbface.com or post a new discussion on our forum: 
-https://plus.google.com/communities/103467353497379821094
+https://www.dbface.com/forum
 
-You can also open a new ticket : http://www.dbface.com/ticket/
+You can also open a new ticket : https://www.dbface.com/ticket/
 
 
