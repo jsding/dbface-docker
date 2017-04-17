@@ -16,7 +16,8 @@ Please get more information from:
 * Documentation: https://www.dbface.com/documents/
 * Manual Installation: https://www.dbface.com/download-dbface
 
-## On-Demand  
+## On-Demand
+
 We also provide on-demand version, please follow the page below to get more information:
 https://www.dbface.com/pricing
 
@@ -48,12 +49,6 @@ This should output your service IP, it might be:
 192.168.99.100
 ```
 Now you can access your app via  http://192.168.99.100:8080
-
-## License
-
-DbFace On-premise provides 15 days trial, after the trial period, you need to get a license to keep it running. Checkout the following page to get more information:
-
-https://www.dbface.com/pricing
 
 ## Issues
 If you have any problems or questions about this image, please feel free to drop us a mail: support@dbface.com or post a new discussion on our forum: 
