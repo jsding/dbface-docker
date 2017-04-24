@@ -12,7 +12,7 @@ ENV HOME /root
 RUN apt-get update
 
 # Setup system and install tools
-RUN apt-get -qqy install passwd supervisor sudo unzip wget curl
+RUN apt-get -qqy install passwd supervisor sudo unzip wget curl cron
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
@@ -62,6 +62,18 @@ RUN mkdir -p /var/www/application/cache && \
     chmod -R 777 /var/www/user && \
     chmod -R 777 /var/www/config/ && \
     chmod 777 /var/www/config/dbface.db
+
+# crontab
+ADD conf/crontab /etc/cron.d/dbface-cron
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/dbface-cron
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cronlog.log
+
+# Run the command on container startup
+CMD cron && tail -f /var/log/cronlog.log
 
 # Run
 # Add supervisor config
