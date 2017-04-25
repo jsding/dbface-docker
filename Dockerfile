@@ -46,13 +46,15 @@ RUN pecl install mongodb
 
 # Download ioncube loader
 RUN cd /var/www/html && \
-    wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz && \
+    wget http://www.dbface.com/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/apache2/php.ini
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/apache2/php.ini && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/cli/php.ini
+    
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v7/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget http://www.dbface.com/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache && \
     mkdir -p /var/www/application/logs && \
@@ -64,16 +66,15 @@ RUN mkdir -p /var/www/application/cache && \
     chmod 777 /var/www/config/dbface.db
 
 # crontab
-ADD conf/crontab /etc/cron.d/dbface-cron
+# steup crontab 5min
+# Add crontab file in the cron directory
+ADD conf/dbface /etc/cron.d/dbface
 
 # Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/dbface-cron
+RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
 RUN touch /var/log/cronlog.log
-
-# Run the command on container startup
-CMD cron && tail -f /var/log/cronlog.log
 
 # Run
 # Add supervisor config

@@ -1,0 +1,2 @@
+*/5 * * * * root /usr/bin/php /var/www/index.php cron 6193rW3iTjXo7N3S27t2I2GA6OJjo03S
+## empty line
