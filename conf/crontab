@@ -1,1 +1,2 @@
-5 * * * * /usr/bin/php /var/www/index.php cron 6193rW3iTjXo7N3S27t2I2GA6OJjo03S >> /var/log/cronlog.log
+5 * * * * root /usr/bin/php /var/www/index.php cron 6193rW3iTjXo7N3S27t2I2GA6OJjo03S >> /var/log/cronlog.log 2>&1
+# An empty line is required at the end of this file for a valid cron file.
