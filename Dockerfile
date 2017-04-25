@@ -54,7 +54,7 @@ RUN cd /var/www/html && \
     
 
 RUN rm -rf /var/www/index.html
-RUN wget http://www.dbface.com/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v7/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache && \
     mkdir -p /var/www/application/logs && \
