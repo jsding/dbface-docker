@@ -43,6 +43,7 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 # Install php
 RUN apt-get -qqy install php-pear php7.0 php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-mbstring php7.0-gd libapache2-mod-php7.0
 RUN pecl install mongodb
+RUN echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
 # Download ioncube loader
 RUN cd /var/www/html && \
