@@ -59,10 +59,12 @@ RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v7/dbface_php5.
 RUN mkdir -p /var/www/application/cache && \
     mkdir -p /var/www/application/logs && \
     mkdir -p /var/www/user && \
+    mkdir -p /var/www/plugins/ide/data && \
     chmod -R 777 /var/www/application/cache && \
     chmod -R 777 /var/www/application/logs && \
     chmod -R 777 /var/www/user && \
     chmod -R 777 /var/www/config/ && \
+    chmod -R 777 /var/www/plugins/ide/data && \
     chmod 777 /var/www/config/dbface.db
 
 # crontab
