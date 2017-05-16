@@ -43,16 +43,16 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 # Install php
 RUN apt-get -qqy install php-pear php7.0 php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-mbstring php7.0-gd libapache2-mod-php7.0
 RUN pecl install mongodb && \
-    echo "extension=mongodb.so" > /etc/php/7.0/cli/php.ini && \
-    echo "extension=mongodb.so" > /etc/php/7.0/apache2/php.ini
+    echo "extension=mongodb.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
 
 # Download ioncube loader
 RUN cd /var/www/html && \
     wget http://www.dbface.com/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/apache2/php.ini && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" > /etc/php/7.0/cli/php.ini
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" >> /etc/php/7.0/apache2/php.ini && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" >> /etc/php/7.0/cli/php.ini
     
 
 RUN rm -rf /var/www/index.html
