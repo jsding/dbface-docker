@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 7.0 (20170625)
+# VERSION 7.0 (20170715)
 
 FROM ubuntu:16.04
 
@@ -59,7 +59,7 @@ RUN cd /var/www/html && \
     
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v7/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v8/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir -p /var/www/application/cache && \
     mkdir -p /var/www/application/logs && \
