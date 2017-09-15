@@ -48,10 +48,7 @@ RUN apt-get -qqy install libssl-dev pkg-config
 RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
-
-RUN sed -i -e "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php/7.0/apache2/php.ini && \
-    sed -i -e "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php/7.0/cli/php.ini
-
+    
 # Download ioncube loader
 RUN cd /var/www/html && \
     wget http://www.dbface.com/ioncube_loaders_lin_x86-64.tar.gz && \
