@@ -13,6 +13,12 @@ RUN apt-get update
 # Setup system and install tools
 RUN apt-get -qqy install passwd supervisor sudo unzip wget curl cron
 
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get -qqy update
+RUN ACCEPT_EULA=Y apt-get -qqy install msodbcsql mssql-tools 
+RUN apt-get -qqy install unixodbc-dev-utf16
+
 # Setup ssh
 RUN apt-get -qqy install openssh-server
 RUN mkdir -p /var/run/sshd
@@ -43,13 +49,6 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 RUN apt-get -qqy install php-pear php7.0 mcrypt php7.0-mcrypt php7.0-dev php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-mbstring php7.0-gd php7.0-xml libapache2-mod-php7.0
 
 RUN apt-get -qqy install libssl-dev pkg-config
-
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update
-RUN ACCEPT_EULA=Y apt-get -qqy install msodbcsql mssql-tools 
-RUN apt-get -qqy install unixodbc-dev-utf16
-
 
 # MongoDB support
 RUN pecl install mongodb && \
