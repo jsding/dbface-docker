@@ -58,10 +58,10 @@ RUN pecl install mongodb && \
     
 # SQL Server Support
 RUN pecl install sqlsrv-5.1.0preview pdo_sqlsrv-5.1.0preview && \
-    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini && \
-    echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
+    echo "extension= php_pdo_sqlsrv_7_ts.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension= php_pdo_sqlsrv_7_ts.so" >> /etc/php/7.0/apache2/php.ini && \
+    echo "extension= php_sqlsrv_7_ts.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension= php_sqlsrv_7_ts.so" >> /etc/php/7.0/apache2/php.ini
 
 # Download ioncube loader
 RUN cd /var/www/html && \
