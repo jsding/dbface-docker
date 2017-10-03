@@ -44,13 +44,20 @@ RUN apt-get -qqy install php-pear php7.0 mcrypt php7.0-mcrypt php7.0-dev php7.0-
 
 RUN apt-get -qqy install libssl-dev pkg-config
 
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get update
+RUN ACCEPT_EULA=Y apt-get -qqy install msodbcsql mssql-tools 
+RUN apt-get -qqy install unixodbc-dev-utf16
+
+
 # MongoDB support
 RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
     
 # SQL Server Support
-RUN pecl install sqlsrv pdo_sqlsrv && \
+RUN pecl install sqlsrv-5.1.0preview pdo_sqlsrv-5.1.0preview && \
     echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
