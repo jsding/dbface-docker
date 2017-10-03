@@ -13,11 +13,14 @@ RUN apt-get update
 # Setup system and install tools
 RUN apt-get -qqy install passwd supervisor sudo unzip wget curl cron apt-transport-https
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list | sudo tee /etc/apt/sources.list.d/mssql-server-2017.list
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-tools.list
+
 RUN apt-get -qqy update
-RUN ACCEPT_EULA=Y apt-get -qqy install msodbcsql mssql-tools 
-RUN apt-get -qqy install unixodbc-dev-utf16
+
+RUN sudo ACCEPT_EULA=Y apt-get install mssql-tools
+RUN sudo apt-get install unixodbc-dev
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
@@ -56,11 +59,11 @@ RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
     
 # SQL Server Support
-RUN pecl install sqlsrv-5.1.0preview pdo_sqlsrv-5.1.0preview && \
-    echo "extension= php_pdo_sqlsrv_7_ts.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= php_pdo_sqlsrv_7_ts.so" >> /etc/php/7.0/apache2/php.ini && \
-    echo "extension= php_sqlsrv_7_ts.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= php_sqlsrv_7_ts.so" >> /etc/php/7.0/apache2/php.ini
+RUN pecl install sqlsrv pdo_sqlsrv && \
+    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini && \
+    echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
 
 # Download ioncube loader
 RUN cd /var/www/html && \
