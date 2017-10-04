@@ -19,7 +19,6 @@ RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee
 
 RUN apt-get -qqy update
 
-RUN sudo ACCEPT_EULA=Y apt-get install mssql-tools
 RUN sudo apt-get install unixodbc-dev
 
 # Setup ssh
