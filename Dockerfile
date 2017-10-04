@@ -68,13 +68,15 @@ RUN pecl install sqlsrv pdo_sqlsrv && \
 RUN mkdir /opt/oracle \
     && cd /opt/oracle \
     && wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/instantclient-basiclite-linux.x64-12.2.0.1.0.zip \
+    && wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/instantclient-sdk-linux.x64-12.2.0.1.0.zip \
     && unzip /opt/oracle/instantclient-basiclite-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
     && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.1 /opt/oracle/instantclient_12_2/libclntsh.so \
     && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.1 /opt/oracle/instantclient_12_2/libclntshcore.so \
     && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.1 /opt/oracle/instantclient_12_2/libocci.so \
     && rm -rf /opt/oracle/*.zip
     
-RUN pecl install oci8 && \
+RUN echo 'instantclient,/opt/oracle/instantclient_12_2/' | pecl install oci8 && \
     echo "extension= oci8.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension= oci8.so" >> /etc/php/7.0/apache2/php.ini
     
