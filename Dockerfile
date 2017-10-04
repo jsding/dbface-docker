@@ -18,8 +18,8 @@ RUN curl https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.li
 RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-tools.list
 
 RUN apt-get -qqy update
-
-RUN sudo apt-get install unixodbc-dev
+RUN ACCEPT_EULA=Y apt-get -qqy install mssql-tools
+RUN sudo apt-get -qqy install unixodbc-dev
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
