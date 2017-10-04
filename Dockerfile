@@ -63,7 +63,21 @@ RUN pecl install sqlsrv pdo_sqlsrv && \
     echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
-
+    
+# Install Oracle Instantclient
+RUN mkdir /opt/oracle \
+    && cd /opt/oracle \
+    && wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/instantclient-basiclite-linux.x64-12.2.0.1.0.zip \
+    && unzip /opt/oracle/instantclient-basiclite-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.1 /opt/oracle/instantclient_12_2/libclntsh.so \
+    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.1 /opt/oracle/instantclient_12_2/libclntshcore.so \
+    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.1 /opt/oracle/instantclient_12_2/libocci.so \
+    && rm -rf /opt/oracle/*.zip
+    
+RUN pecl install oci8 && \
+    echo "extension= oci8.so" >> /etc/php/7.0/cli/php.ini && \
+    echo "extension= oci8.so" >> /etc/php/7.0/apache2/php.ini
+    
 # Download ioncube loader
 RUN cd /var/www/html && \
     wget http://s3-ap-southeast-1.amazonaws.com/download-dbface/ioncube_loaders_lin_x86-64.tar.gz && \
