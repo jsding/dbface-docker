@@ -50,7 +50,7 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 # Install php
 RUN apt-get -qqy install php-pear php7.0 mcrypt php7.0-mcrypt php7.0-dev php7.0-cli php7.0-mysql php7.0-sqlite php7.0-interbase php7.0-pgsql php7.0-curl php7.0-mbstring php7.0-gd php7.0-xml libapache2-mod-php7.0
 
-RUN apt-get -qqy install libssl-dev pkg-config
+RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
 # MongoDB support
 RUN pecl install mongodb && \
