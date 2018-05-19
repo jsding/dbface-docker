@@ -92,16 +92,7 @@ RUN cd /var/www/html && \
 RUN rm -rf /var/www/index.html
 RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v8/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
-RUN mkdir -p /var/www/application/cache && \
-    mkdir -p /var/www/application/logs && \
-    mkdir -p /var/www/user && \
-    mkdir -p /var/www/plugins/ide/data && \
-    chmod -R 777 /var/www/application/cache && \
-    chmod -R 777 /var/www/application/logs && \
-    chmod -R 777 /var/www/user && \
-    chmod -R 777 /var/www/config/ && \
-    chmod -R 777 /var/www/plugins/ide/data && \
-    chmod 777 /var/www/config/dbface.db
+RUN chmod -R 755 /var/www/user 
 
 # crontab
 # steup crontab 5min
