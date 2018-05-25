@@ -36,7 +36,6 @@ sudo docker pull dbface/dbface-docker
 
 ```
 sudo docker run -d --name dbface -p 8080:80 -t dbface/dbface-docker
-
 ```
 Use custom user data volume
 ```
