@@ -36,8 +36,12 @@ sudo docker pull dbface/dbface-docker
 
 ```
 sudo docker run -d --name dbface -p 8080:80 -t dbface/dbface-docker
-```
 
+```
+Use custom user data volume
+```
+sudo docker run -d --name dbface -v /data/dbface:/var/www/user -t dbface/dbface-docker
+```
 ## Enjoy
 
 If you are on windows, find your docker IP
