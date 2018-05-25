@@ -5,9 +5,6 @@ FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
 
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r www-data && useradd -r -g www-data www-data
-
 # Upgrade system
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
@@ -95,6 +92,7 @@ RUN cd /var/www/html && \
 RUN rm -rf /var/www/index.html
 RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v8/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
+RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/user 
 
 # crontab
