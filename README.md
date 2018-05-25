@@ -13,7 +13,7 @@ Please get more information from:
 * Website: https://www.dbface.com
 * Facebook: https://www.facebook.com/dbface
 * Twitter: https://www.twitter.com/dbface
-* Documentation: https://www.dbface.com/documents/
+* Documentation: https://docs.dbface.com/
 * Manual Installation: https://www.dbface.com/download-dbface
 
 ## On-Demand
@@ -52,8 +52,8 @@ Now you can access your app via  http://192.168.99.100:8080
 
 ## Issues
 If you have any problems or questions about this image, please feel free to drop us a mail: support@dbface.com or post a new discussion on our forum: 
-https://www.dbface.com/forum
+https://forum.dbface.com
 
-You can also open a new ticket : https://www.dbface.com/ticket/
+You can also open a new ticket : https://ticket.dbface.com/
 
 
