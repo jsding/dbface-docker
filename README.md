@@ -34,12 +34,19 @@ sudo docker pull dbface/dbface-docker
 
 ## Run
 
-```
-sudo docker run -d --name dbface -p 8080:80 -t dbface/dbface-docker
-```
 Use custom user data volume
 ```
-sudo docker run -d --name dbface -v /data/dbface:/var/www/user -t dbface/dbface-docker
+mkdir /data/dbface
+docker run -d --name dbface -v /data/dbface:/var/www/user -t dbface/dbface-docker
+```
+
+## Upgrade
+```
+docker pull dbface/dbface-docker
+```
+then stop and remove the running container, and create a new container with the same data volume
+```
+docker run -d --name dbface -v /data/dbface:/var/www/user -t dbface/dbface-docker
 ```
 ## Enjoy
 
