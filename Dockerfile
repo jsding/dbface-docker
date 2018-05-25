@@ -5,6 +5,9 @@ FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
 
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r www-data && useradd -r -g www-data www-data
+
 # Upgrade system
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
