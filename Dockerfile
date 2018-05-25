@@ -119,7 +119,7 @@ RUN apt-get clean -y; \
     rm -rf /var/www/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
     
-VOLUME /var/www
+VOLUME /var/www/user
 EXPOSE 22 80 443
 
 CMD ["/bin/bash", "/usr/bin/startup_container"]
