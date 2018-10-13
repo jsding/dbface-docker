@@ -75,10 +75,6 @@ RUN pecl install sqlsrv pdo_sqlsrv && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
     
-# copy 30-pdo_sqlsrv.ini to some locations for loading
-RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/fpm/conf.d
-RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/apache2/conf.d
-
 # Install Oracle Instantclient
 RUN mkdir /opt/oracle \
     && cd /opt/oracle \
