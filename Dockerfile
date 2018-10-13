@@ -13,9 +13,8 @@ RUN apt-get update
 # Setup system and install tools
 RUN apt-get -qqy install passwd supervisor sudo unzip wget curl cron apt-transport-https
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list | sudo tee /etc/apt/sources.list.d/mssql-server-2017.list
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-tools.list
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
 RUN apt-get -qqy update
 
@@ -69,12 +68,25 @@ RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
     
 # SQL Server Support
-RUN pecl install sqlsrv pdo_sqlsrv && \
-    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini && \
-    echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
-    echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
-    
+# install sqlsrv
+RUN pecl install sqlsrv
+RUN pecl install pdo_sqlsrv
+
+RUN a2dismod mpm_event
+RUN a2enmod mpm_prefork
+RUN a2enmod php7.0
+
+# add sqlsrv extension info to apache2/php.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
+
+# copy 30-pdo_sqlsrv.ini to some locations for loading
+RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/cli/conf.d
+RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/apache2/conf.d
+
+# install locales (sqlcmd will have a fit if you don't have this)
+RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
 # Install Oracle Instantclient
 RUN mkdir /opt/oracle \
     && cd /opt/oracle \
