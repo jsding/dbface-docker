@@ -27,13 +27,6 @@ RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
 RUN sudo apt-get -qqy install unixodbc-dev
 
-# add extension info to ini files
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/20-sqlsrv.ini
-
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/cli/conf.d/20-sqlsrv.ini
-
 # Setup ssh
 RUN apt-get -qqy install openssh-server
 RUN mkdir -p /var/run/sshd
@@ -71,6 +64,13 @@ RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/apache2/php.ini
     
 # SQL Server Support
+# add extension info to ini files
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/20-sqlsrv.ini
+
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/cli/conf.d/20-sqlsrv.ini
+
 # install sqlsrv
 RUN pecl install sqlsrv
 RUN pecl install pdo_sqlsrv
