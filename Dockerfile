@@ -28,8 +28,11 @@ RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN sudo apt-get -qqy install unixodbc-dev
 
 # add extension info to ini files
-RUN echo extension=pdo_sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/30-pdo_sqlsrv.ini
-RUN echo extension=sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/20-sqlsrv.ini
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/apache2/conf.d/20-sqlsrv.ini
+
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/cli/conf.d/20-sqlsrv.ini
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
@@ -79,10 +82,6 @@ RUN a2enmod php7.0
 # add sqlsrv extension info to apache2/php.ini
 RUN echo "extension=sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
 RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
-
-# copy 30-pdo_sqlsrv.ini to some locations for loading
-RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/cli/conf.d
-RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/apache2/conf.d
 
 # install locales (sqlcmd will have a fit if you don't have this)
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
