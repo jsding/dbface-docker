@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 7.7 (20180712)
+# VERSION 7.9 (20181013)
 FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
@@ -18,8 +18,19 @@ RUN curl https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.li
 RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-tools.list
 
 RUN apt-get -qqy update
+
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
 RUN ACCEPT_EULA=Y apt-get -qqy install mssql-tools
+
+# add msssql-tools to path 
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+
 RUN sudo apt-get -qqy install unixodbc-dev
+
+# add extension info to ini files
+RUN echo extension=pdo_sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/30-pdo_sqlsrv.ini
+RUN echo extension=sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/20-sqlsrv.ini
 
 # Setup ssh
 RUN apt-get -qqy install openssh-server
@@ -64,6 +75,10 @@ RUN pecl install sqlsrv pdo_sqlsrv && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/cli/php.ini && \
     echo "extension= sqlsrv.so" >> /etc/php/7.0/apache2/php.ini
     
+# copy 30-pdo_sqlsrv.ini to some locations for loading
+RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/fpm/conf.d
+RUN cp /etc/php/7.0/cli/conf.d/30-pdo_sqlsrv.ini /etc/php/7.0/apache2/conf.d
+
 # Install Oracle Instantclient
 RUN mkdir /opt/oracle \
     && cd /opt/oracle \
