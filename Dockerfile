@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 8.0 (20181224)
+# VERSION 8.0 (20181225)
 FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
