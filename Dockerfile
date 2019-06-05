@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 8.3 (20190211)
+# VERSION 8.5 (20190605)
 FROM ubuntu:16.04
 
 MAINTAINER DbFace "support@dbface.com"
@@ -112,7 +112,7 @@ RUN cd /var/www/html && \
     
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v8/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v9/dbface_php5.6.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/user 
