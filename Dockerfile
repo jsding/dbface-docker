@@ -107,8 +107,8 @@ RUN cd /var/www/html && \
     wget http://s3-ap-southeast-1.amazonaws.com/download-dbface/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" >> /etc/php/7.1/apache2/php.ini && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.0.so" >> /etc/php/7.1/cli/php.ini
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.1.so" >> /etc/php/7.1/apache2/php.ini && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.1.so" >> /etc/php/7.1/cli/php.ini
     
 
 RUN rm -rf /var/www/index.html
