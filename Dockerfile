@@ -11,7 +11,7 @@ ENV HOME /root
 RUN apt-get update
 
 # Setup system and install tools
-RUN apt-get -qqy install apt-utils passwd supervisor sudo unzip wget curl cron apt-transport-https 
+RUN apt-get -qqy install apt-utils passwd supervisor sudo unzip wget curl cron apt-transport-https gnupg2
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
