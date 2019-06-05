@@ -54,6 +54,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
+RUN add-apt-repository ppa:ondrej/php
 RUN apt-get -qqy install php-pear php7.1 mcrypt php7.1-mcrypt php7.1-dev php7.1-cli php7.1-mysql php7.1-sqlite php7.1-interbase php7.1-pgsql php7.1-curl php7.1-mbstring php7.1-gd php7.1-xml libapache2-mod-php7.1
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
