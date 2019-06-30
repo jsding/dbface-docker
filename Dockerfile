@@ -85,21 +85,8 @@ RUN echo "extension=sqlsrv.so" >> /etc/php/7.1/cli/conf.d/20-sqlsrv.ini
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
 # Install Oracle Instantclient
-RUN mkdir /opt/oracle \
-    && cd /opt/oracle \
-    && wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/instantclient-basiclite-linux.x64-12.2.0.1.0.zip \
-    && wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/instantclient-sdk-linux.x64-12.2.0.1.0.zip \
-    && unzip /opt/oracle/instantclient-basiclite-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
-    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
-    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.1 /opt/oracle/instantclient_12_2/libclntsh.so \
-    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.1 /opt/oracle/instantclient_12_2/libclntshcore.so \
-    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.1 /opt/oracle/instantclient_12_2/libocci.so \
-    && rm -rf /opt/oracle/*.zip
-    
-RUN echo 'instantclient,/opt/oracle/instantclient_12_2/' | pecl install oci8 && \
-    echo "extension= oci8.so" >> /etc/php/7.1/cli/php.ini && \
-    echo "extension= oci8.so" >> /etc/php/7.1/apache2/php.ini
-    
+# not enable oracle defautly
+
 # Download ioncube loader
 RUN cd /var/www/html && \
     wget http://s3-ap-southeast-1.amazonaws.com/download-dbface/ioncube_loaders_lin_x86-64.tar.gz && \
