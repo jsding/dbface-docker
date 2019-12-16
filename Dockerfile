@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 8.5 (20190605)
+# VERSION 8.6 (20190611)
 FROM ubuntu:18.04
 
 MAINTAINER DbFace "support@dbface.com"
@@ -11,11 +11,12 @@ ENV HOME /root
 RUN apt-get update
 
 # Setup system and install tools
-RUN apt-get -qqy install apt-utils passwd supervisor sudo unzip wget curl cron apt-transport-https gnupg2
+RUN apt-get update && apt-get -qqy install passwd supervisor sudo unzip wget curl cron apt-transport-https gnupg2
+
 RUN apt-get -qqy install software-properties-common
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
 RUN apt-get -qqy update
 
