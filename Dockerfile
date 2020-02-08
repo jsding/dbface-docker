@@ -4,8 +4,6 @@
 
 FROM ubuntu:18.04
 
-MAINTAINER DbFace "support@dbface.com"
-
 # Upgrade system
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
@@ -58,14 +56,14 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
 RUN add-apt-repository ppa:ondrej/php
-RUN apt-get -qqy install php-pear php7.1 mcrypt php7.1-mcrypt php7.1-dev php7.1-cli php7.1-mysql php7.1-sqlite php7.1-interbase php7.1-pgsql php7.1-curl php7.1-mbstring php7.1-gd php7.1-xml libapache2-mod-php7.1
+RUN apt-get -qqy install php-pear php7.2 mcrypt php7.2-mcrypt php7.2-dev php7.2-cli php7.2-mysql php7.2-sqlite php7.2-interbase php7.2-pgsql php7.2-curl php7.2-mbstring php7.2-gd php7.2-xml libapache2-mod-php7.2
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
 # MongoDB support
 RUN pecl install mongodb && \
-    echo "extension=mongodb.so" >> /etc/php/7.1/cli/php.ini && \
-    echo "extension=mongodb.so" >> /etc/php/7.1/apache2/php.ini
+    echo "extension=mongodb.so" >> /etc/php/7.2/cli/php.ini && \
+    echo "extension=mongodb.so" >> /etc/php/7.2/apache2/php.ini
     
 # install sqlsrv
 RUN pecl install sqlsrv
@@ -73,15 +71,15 @@ RUN pecl install pdo_sqlsrv
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
-RUN a2enmod php7.1
+RUN a2enmod php7.2
 
 # SQL Server Support
 # add extension info to ini files
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.1/apache2/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.1/apache2/conf.d/20-sqlsrv.ini
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.2/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.2/apache2/conf.d/20-sqlsrv.ini
 
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.1/cli/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.1/cli/conf.d/20-sqlsrv.ini
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.2/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.2/cli/conf.d/20-sqlsrv.ini
 
 # install locales (sqlcmd will have a fit if you don't have this)
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
@@ -94,12 +92,12 @@ RUN cd /var/www/html && \
     wget http://s3-ap-southeast-1.amazonaws.com/download-dbface/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.1.so" >> /etc/php/7.1/apache2/php.ini && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.1.so" >> /etc/php/7.1/cli/php.ini
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.2.so" >> /etc/php/7.2/apache2/php.ini && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.2.so" >> /etc/php/7.2/cli/php.ini
     
 
 RUN rm -rf /var/www/index.html
-RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v10/dbface_php7.1.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://s3-ap-southeast-1.amazonaws.com/download-dbface/v10/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/user 
