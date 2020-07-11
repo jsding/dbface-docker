@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 9.3 (20200625)
+# VERSION 9.4 (20200711)
 
 FROM ubuntu:18.04
 
@@ -89,7 +89,7 @@ RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && 
 
 # Download ioncube loader
 RUN cd /var/www/html && \
-    wget http://s3-ap-southeast-1.amazonaws.com/download-dbface/ioncube_loaders_lin_x86-64.tar.gz && \
+    wget https://dbface.oss-us-east-1.aliyuncs.com/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
     echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.2.so" >> /etc/php/7.2/apache2/php.ini && \
