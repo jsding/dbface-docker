@@ -111,7 +111,7 @@ ADD conf/dbface /etc/cron.d/dbface
 RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
-RUN touch /var/log/cronlog.log
+RUN touch /var/www/user/logs/cronlog.log
 
 # Run
 # Add supervisor config
