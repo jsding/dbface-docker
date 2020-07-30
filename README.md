@@ -40,6 +40,8 @@ mkdir /data/dbface
 docker run -d --name dbface -p 80:80 -v /data/dbface:/var/www/user -t dbface/dbface-docker
 ```
 
+*Note* Please always use data volume (-v /data/dbface:/var/www/user), 
+
 ## Upgrade
 ```
 docker pull dbface/dbface-docker
