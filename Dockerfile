@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 9.4 (20200811)
+# VERSION 9.4 (20200813)
 
 FROM ubuntu:18.04
 
