@@ -56,7 +56,7 @@ ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
 RUN add-apt-repository ppa:ondrej/php
-RUN apt-get -qqy install php-pear php7.2 mcrypt  php7.2-dev php7.2-cli php7.2-mysql php7.2-sqlite php7.2-interbase php7.2-pgsql php7.2-curl php7.2-mbstring php7.2-gd php7.2-xml php7.2-bcmath php7.2-zip libapache2-mod-php7.2
+RUN apt-get -qqy install php-pear php7.2 mcrypt  php7.2-dev php7.2-cli php7.2-mysql php7.2-sqlite3 php7.2-interbase php7.2-pgsql php7.2-curl php7.2-mbstring php7.2-gd php7.2-xml php7.2-bcmath php7.2-zip libapache2-mod-php7.2
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
