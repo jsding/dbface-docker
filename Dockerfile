@@ -66,8 +66,8 @@ RUN pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.2/apache2/php.ini
     
 # install sqlsrv
-RUN pecl install sqlsrv
-RUN pecl install pdo_sqlsrv
+# RUN pecl install sqlsrv
+# RUN pecl install pdo_sqlsrv
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
