@@ -27,7 +27,7 @@ RUN apk add --no-cache \
 
 RUN apk add libzip-dev
 
-RUN docker-php-ext-install pdo pdo_mysql zip bcmath
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql zip bcmath 
 
 RUN apk add --no-cache php7-imap && \
   mkdir -p setup && cd setup && \

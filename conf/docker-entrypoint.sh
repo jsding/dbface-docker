@@ -40,4 +40,4 @@ done
 # crond -l 2 -f
 
 # Start Apache in foreground
-# exec apache2 -DFOREGROUND "$@"
+exec apache2 -DFOREGROUND "$@"
