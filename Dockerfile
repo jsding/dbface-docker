@@ -54,7 +54,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
-RUN apt-get -qqy install php-pear php mcrypt  php-dev php-cli php-mysql php-sqlite php-interbase php-pgsql php-curl php-mbstring php-gd php-xml php-bcmath php-zip libapache2-mod-php7.4
+RUN apt-get -qqy install php-pear php mcrypt  php-dev php-cli php-mysql php-sqlite3 php-interbase php-pgsql php-curl php-mbstring php-gd php-xml php-bcmath php-zip libapache2-mod-php
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
