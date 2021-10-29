@@ -1,54 +1,130 @@
 # DbFace On-premises
 #
-# VERSION 10 (20211029)
-FROM php:7.4-alpine
+# VERSION 10 (20210827)
+FROM ubuntu:20.04
 
-RUN apk update && apk add dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
+# Upgrade system
+ENV DEBIAN_FRONTEND noninteractive
+ENV HOME /root
+RUN apt-get update
 
-# Setup GD extension
-RUN apk add --no-cache \
-      freetype \
-      libjpeg-turbo \
-      libpng \
-      freetype-dev \
-      libjpeg-turbo-dev \
-      libpng-dev \
-    && docker-php-ext-configure gd \
-      --with-freetype=/usr/include/ \
-      --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd \
-    && apk del --no-cache \
-      freetype-dev \
-      libjpeg-turbo-dev \
-      libpng-dev \
-    && rm -rf /tmp/*
+# Setup system and install tools
+RUN apt-get update && apt-get -qqy install passwd supervisor sudo unzip wget curl cron apt-transport-https gnupg2
 
-RUN apk add libzip-dev
+RUN apt-get -qqy install software-properties-common
 
-RUN docker-php-ext-install pdo pdo_mysql zip bcmath
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-RUN apk add --no-cache php7-imap && \
-  mkdir -p setup && cd setup && \
-  curl -sSL https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -o ioncube.tar.gz && \
-  tar -xf ioncube.tar.gz && \
-  mv ioncube/ioncube_loader_lin_7.2.so /usr/lib/php7/modules/ && \
-  echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_7.2.so' >  /etc/php7/conf.d/00-ioncube.ini && \
-  cd .. && rm -rf setup
+RUN apt-get -qqy update
+
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
+RUN ACCEPT_EULA=Y apt-get -qqy install mssql-tools
+
+# add msssql-tools to path 
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+
+RUN sudo apt-get -qqy install unixodbc-dev
+
+# Setup ssh
+RUN apt-get -qqy install openssh-server
+RUN mkdir -p /var/run/sshd
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
+RUN sed -ri 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+RUN echo 'root:root' | chpasswd
+
+# Generate a host key before packing.
+RUN service ssh start; service ssh stop
+
+# Create SSL cert
+RUN mkdir /root/ssl; \
+    openssl genrsa -out /root/ssl/local.key 1024; \
+    openssl req -new -key /root/ssl/local.key -out /root/ssl/local.csr -subj "/C=DE/ST=BW/L=FREIBURG/O=Jankowfsky AG/OU=Development/CN=localhost"; \
+    openssl x509 -req -days 365 -in /root/ssl/local.csr -signkey /root/ssl/local.key -out /root/ssl/local.crt
+
+# Install apache
+RUN apt-get -qqy install apache2 apache2-utils
+RUN a2enmod rewrite
+RUN a2enmod ssl
+RUN mkdir -p /etc/apache2/conf.d/
+RUN echo "ServerName localhost" | tee /etc/apache2/conf.d/fqdn
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
+
+# Install php
+RUN apt-get -qqy install php-pear php mcrypt  php-dev php-cli php-mysql php-sqlite php-interbase php-pgsql php-curl php-mbstring php-gd php-xml php-bcmath php-zip libapache2-mod-php7.4
+
+RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
+
+# MongoDB support
+RUN pecl install mongodb && \
+    echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && \
+    echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
     
-ADD conf/000-default /etc/apache2/sites-enabled/000-default.conf
+# install sqlsrv
+# RUN pecl install sqlsrv
+# RUN pecl install pdo_sqlsrv
 
-RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www/html /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN a2dismod mpm_event
+RUN a2enmod mpm_prefork
+RUN a2enmod php7.2
 
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html/user
+# SQL Server Support
+# add extension info to ini files
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
 
-# set up cronjob
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
+
+# install locales (sqlcmd will have a fit if you don't have this)
+RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
+# Install Oracle Instantclient
+# not enable oracle defautly
+
+# Download ioncube loader
+RUN cd /var/www/html && \
+    wget https://dbface.oss-us-east-1.aliyuncs.com/ioncube_loaders_lin_x86-64.tar.gz && \
+    tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
+    rm ioncube_loaders_lin_x86-64.tar.gz && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.2.so" >> /etc/php/7.2/apache2/php.ini && \
+    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.2.so" >> /etc/php/7.2/cli/php.ini
+    
+
+RUN rm -rf /var/www/index.html
+RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+
+RUN chown -R www-data:www-data /var/www
+RUN chmod -R 755 /var/www/user 
+
+# crontab
 # steup crontab 5min
 # Add crontab file in the cron directory
-COPY conf/dbface /var/spool/cron/crontabs/root
+ADD conf/dbface /etc/cron.d/dbface
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
-RUN touch /var/www/html/user/logs/cronlog.log
+RUN touch /var/www/user/logs/cronlog.log
 
-EXPOSE 80
+# Run
+# Add supervisor config
+ADD conf/supervisor/startup.conf /etc/supervisor/conf.d/startup.conf
+
+ADD conf/scripts/startup.sh /usr/bin/startup_container
+RUN chmod +x /usr/bin/startup_container
+
+# Cleanup
+RUN apt-get clean -y; \
+    apt-get autoclean -y; \
+    apt-get autoremove -y; \
+    rm -rf /var/www/index.html; \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+    
+EXPOSE 22 80 443
+
+CMD ["/bin/bash", "/usr/bin/startup_container"]
