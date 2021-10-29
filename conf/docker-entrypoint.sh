@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # Note: we don't just use "apache2ctl" here because it itself is just a shell-script wrapper around apache2 which provides extra functionality like "apache2ctl start" for launching apache2 in the background.
@@ -40,4 +40,4 @@ done
 # crond -l 2 -f
 
 # Start Apache in foreground
-exec apache2 -DFOREGROUND "$@"
+# exec apache2 -DFOREGROUND "$@"

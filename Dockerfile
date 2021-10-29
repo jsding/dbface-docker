@@ -4,7 +4,7 @@
 
 FROM php:7.4-alpine
 
-RUN apk update && apk add dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
+RUN apk update && apk add bash dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
 
 # Setup GD extension
 RUN apk add --no-cache \
@@ -57,5 +57,5 @@ EXPOSE 80
 COPY conf/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 RUN chmod +x /usr/bin/docker-entrypoint.sh
 
-CMD ["/bin/sh", "/usr/bin/docker-entrypoint.sh"]
+CMD ["/bin/bash", "/usr/bin/docker-entrypoint.sh"]
 
