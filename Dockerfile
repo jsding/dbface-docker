@@ -1,8 +1,8 @@
 # DbFace On-premises
 #
-# VERSION 9.9 (20210827)
+# VERSION 10 (20211029)
 
-FROM ubuntu:18.04
+FROM php:7.4-apache
 
 # Upgrade system
 ENV DEBIAN_FRONTEND noninteractive
