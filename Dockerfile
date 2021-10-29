@@ -10,8 +10,11 @@ ENV HOME /root
 # Setup system and install tools
 RUN apt-get update && apt-get -qqy install passwd sudo unzip wget curl cron apt-transport-https gnupg2
 
+# Install nodejs environment
+RUN apt-get -qqy install nodejs npm
+
 # Install apache
-RUN apt-get -qqy install apache2 apache2-utils
+RUN apt-get -qqy install apache2
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN mkdir -p /etc/apache2/conf.d/
@@ -20,14 +23,12 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
-RUN apt-get -qqy install php-pear php mcrypt  php-dev php-cli php-mysql php-sqlite3 php-interbase php-pgsql php-curl php-mbstring php-gd php-xml php-bcmath php-zip libapache2-mod-php
+RUN apt-get -qqy install php-pear php mcrypt php-dev php-cli php-mysql php-sqlite3 php-interbase php-pgsql php-curl php-mbstring php-gd php-xml php-bcmath php-zip libapache2-mod-php
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
 # MongoDB support
-RUN pecl install mongodb && \
-    echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && \
-    echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
+RUN pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
     
 # install sqlsrv
 # RUN pecl install sqlsrv
@@ -74,9 +75,6 @@ RUN chmod 0644 /etc/cron.d/dbface
 RUN touch /var/www/user/logs/cronlog.log
 
 # Run
-# Add supervisor config
-ADD conf/supervisor/startup.conf /etc/supervisor/conf.d/startup.conf
-
 ADD conf/scripts/startup.sh /usr/bin/startup_container
 RUN chmod +x /usr/bin/startup_container
 
