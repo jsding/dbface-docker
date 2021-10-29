@@ -54,6 +54,8 @@ RUN touch /var/www/html/user/logs/cronlog.log
 
 EXPOSE 80
 
-COPY conf/docker-entrypoint.sh /
-RUN chmod 777 /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY conf/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+
+CMD ["/bin/bash", "/usr/bin/docker-entrypoint.sh"]
+
