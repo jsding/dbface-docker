@@ -37,7 +37,10 @@ RUN apk add --no-cache php7-imap && \
   echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_7.2.so' >  /etc/php7/conf.d/00-ioncube.ini && \
   cd .. && rm -rf setup
     
+RUN apk add apache2-utils
 RUN a2enmod rewrite
+
+ADD conf/000-default /etc/apache2/sites-enabled/000-default.conf
 
 RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www/html /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
@@ -54,5 +57,6 @@ RUN touch /var/www/html/user/logs/cronlog.log
 
 EXPOSE 80
 
-# To start apache in the background as a service
-CMD ["httpd", "-DFOREGROUND"]
+COPY conf/docker-entrypoint.sh /
+RUN chmod 777 /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
