@@ -57,5 +57,5 @@ EXPOSE 80
 COPY conf/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 RUN chmod +x /usr/bin/docker-entrypoint.sh
 
-CMD ["/bin/bash", "/usr/bin/docker-entrypoint.sh"]
+CMD ["/bin/sh", "/usr/bin/docker-entrypoint.sh"]
 
