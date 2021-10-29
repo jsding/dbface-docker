@@ -69,7 +69,7 @@ RUN pecl install mongodb && \
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
-RUN a2enmod php7.2
+RUN a2enmod php7.4
 
 # SQL Server Support
 # add extension info to ini files
