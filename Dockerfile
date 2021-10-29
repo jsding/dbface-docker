@@ -4,7 +4,30 @@
 
 FROM php:7.4-alpine
 
-RUN apk add --no-cache wget
+RUN apk update && apk add dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
+
+# Setup GD extension
+RUN apk add --no-cache \
+      freetype \
+      libjpeg-turbo \
+      libpng \
+      freetype-dev \
+      libjpeg-turbo-dev \
+      libpng-dev \
+    && docker-php-ext-configure gd \
+      --with-freetype=/usr/include/ \
+      --with-jpeg=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-enable gd \
+    && apk del --no-cache \
+      freetype-dev \
+      libjpeg-turbo-dev \
+      libpng-dev \
+    && rm -rf /tmp/*
+
+RUN apk add libzip-dev
+
+RUN docker-php-ext-install pdo pdo_mysql zip bcmath
 
 RUN apk add --no-cache php7-imap && \
   mkdir -p setup && cd setup && \
@@ -14,8 +37,22 @@ RUN apk add --no-cache php7-imap && \
   echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_7.2.so' >  /etc/php7/conf.d/00-ioncube.ini && \
   cd .. && rm -rf setup
     
+RUN a2enmod rewrite
 
 RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www/html /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 755 /var/www/html/user
+
+# set up cronjob
+# steup crontab 5min
+# Add crontab file in the cron directory
+COPY conf/dbface /var/spool/cron/crontabs/root
+
+# Create the log file to be able to run tail
+RUN touch /var/www/html/user/logs/cronlog.log
+
+EXPOSE 80
+
+# To start apache in the background as a service
+CMD ["httpd", "-DFOREGROUND"]
