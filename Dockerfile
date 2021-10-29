@@ -1,10 +1,9 @@
 # DbFace On-premises
 #
 # VERSION 10 (20211029)
-
 FROM php:7.4-alpine
 
-RUN apk update && apk add bash dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
+RUN apk update && apk add dcron curl wget rsync ca-certificates && rm -rf /var/cache/apk/*
 
 # Setup GD extension
 RUN apk add --no-cache \
@@ -27,7 +26,7 @@ RUN apk add --no-cache \
 
 RUN apk add libzip-dev
 
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql zip bcmath 
+RUN docker-php-ext-install pdo pdo_mysql zip bcmath
 
 RUN apk add --no-cache php7-imap && \
   mkdir -p setup && cd setup && \
@@ -53,9 +52,3 @@ COPY conf/dbface /var/spool/cron/crontabs/root
 RUN touch /var/www/html/user/logs/cronlog.log
 
 EXPOSE 80
-
-COPY conf/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/docker-entrypoint.sh
-
-CMD ["/bin/bash", "/usr/bin/docker-entrypoint.sh"]
-
