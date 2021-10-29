@@ -10,20 +10,6 @@ ENV HOME /root
 # Setup system and install tools
 RUN apt-get update && apt-get -qqy install passwd sudo unzip wget curl cron apt-transport-https gnupg2
 
-RUN apt-get -qqy install software-properties-common
-
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
-RUN ACCEPT_EULA=Y apt-get -qqy install mssql-tools
-
-# add msssql-tools to path 
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-
-RUN sudo apt-get -qqy install unixodbc-dev
-
 # Install apache
 RUN apt-get -qqy install apache2 apache2-utils
 RUN a2enmod rewrite
@@ -101,6 +87,6 @@ RUN apt-get clean -y; \
     rm -rf /var/www/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
     
-EXPOSE 22 80
+EXPOSE 80
 
 CMD ["/bin/bash", "/usr/bin/startup_container"]
