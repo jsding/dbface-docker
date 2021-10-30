@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 10 (20211029)
+# VERSION 10 (20211030)
 FROM ubuntu:20.04
 
 # Upgrade system
@@ -18,8 +18,7 @@ RUN apt-get -qqy install apache2
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN mkdir -p /etc/apache2/conf.d/
-RUN echo "ServerName localhost" | tee /etc/apache2/conf.d/fqdn
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
@@ -40,11 +39,11 @@ RUN a2enmod php7.4
 
 # SQL Server Support
 # add extension info to ini files
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
+# RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
+# RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
 
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
+# RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
+# RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
 
 # install locales (sqlcmd will have a fit if you don't have this)
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
