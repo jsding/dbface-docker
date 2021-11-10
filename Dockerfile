@@ -70,7 +70,9 @@ RUN chmod 0644 /etc/cron.d/dbface
 RUN touch /var/www/user/logs/cronlog.log
 
 # install puppeteer
-RUN cd /var/www/html/config && npm install puppeteer
+WORKDIR "/var/www/html/config"
+
+RUN npm install puppeteer
 
 # Run
 ADD conf/scripts/startup.sh /usr/bin/startup_container
