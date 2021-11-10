@@ -67,7 +67,7 @@ ADD conf/dbface /etc/cron.d/dbface
 RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
-RUN touch /var/www/user/logs/cronlog.log
+RUN touch /var/www/html/user/logs/cronlog.log
 
 # install puppeteer
 WORKDIR "/var/www/html/config"
@@ -82,7 +82,7 @@ RUN chmod +x /usr/bin/startup_container
 RUN apt-get clean -y; \
     apt-get autoclean -y; \
     apt-get autoremove -y; \
-    rm -rf /var/www/index.html; \
+    rm -rf /var/www/user/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
     
 EXPOSE 80
