@@ -45,12 +45,12 @@ RUN a2enmod php7.4
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
 # Download ioncube loader
-RUN cd /var/www/html && \
+RUN cd /var/www && \
     wget https://dbface.oss-us-east-1.aliyuncs.com/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/apache2/php.ini && \
-    echo "zend_extension = /var/www/html/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/cli/php.ini
+    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/apache2/php.ini && \
+    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/cli/php.ini
     
 RUN rm -rf /var/www/index.html
 RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
@@ -67,10 +67,10 @@ ADD conf/dbface /etc/cron.d/dbface
 RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
-RUN touch /var/www/html/user/logs/cronlog.log
+RUN touch /var/www/user/logs/cronlog.log
 
 # install puppeteer
-WORKDIR "/var/www/html/config"
+WORKDIR "/var/www/config"
 
 RUN npm install puppeteer
 
@@ -82,7 +82,6 @@ RUN chmod +x /usr/bin/startup_container
 RUN apt-get clean -y; \
     apt-get autoclean -y; \
     apt-get autoremove -y; \
-    rm -rf /var/www/user/index.html; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
     
 EXPOSE 80
