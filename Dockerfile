@@ -7,7 +7,8 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
-RUN apt-get -qqy software-properties-common
+RUN apt-get -qqy install software-properties-common
+
 RUN add-apt-repository ppa:ondrej/php -y
 
 # Setup system and install tools
