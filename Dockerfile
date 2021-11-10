@@ -1,6 +1,6 @@
 # DbFace On-premises
 #
-# VERSION 10 (20211030)
+# VERSION 10 (20211110)
 FROM ubuntu:20.04
 
 # Upgrade system
@@ -19,6 +19,8 @@ RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN mkdir -p /etc/apache2/conf.d/
 
+RUN echo "ServerName localhost" | tee /etc/apache2/conf.d/fqdn
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 ADD conf/apache/000-default /etc/apache2/sites-enabled/000-default.conf
 
 # Install php
