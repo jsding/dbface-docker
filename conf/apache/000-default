@@ -8,9 +8,9 @@
         allow from all
     </Directory>
 
-    ErrorLog /var/www/user/logs/apache-error.log
+    ErrorLog /var/www/logs/apache-error.log
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/www/user/logs/apache-access.log combined
+    CustomLog /var/www/logs/apache-access.log combined
 </VirtualHost>

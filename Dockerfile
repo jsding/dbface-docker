@@ -55,8 +55,11 @@ RUN cd /var/www && \
 RUN rm -rf /var/www/index.html
 RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
+RUN mkdir /var/www/logs
+
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/user 
+
 
 # crontab
 # steup crontab 5min
