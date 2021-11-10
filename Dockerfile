@@ -7,11 +7,6 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
-RUN apt-get update
-RUN apt-get -qqy install software-properties-common
-
-RUN add-apt-repository ppa:ondrej/php -y
-
 # Setup system and install tools
 RUN apt-get update && apt-get -qqy install passwd sudo unzip wget curl cron apt-transport-https gnupg2
 
@@ -40,18 +35,6 @@ RUN pecl install mongodb
     
 RUN echo "extension=mongodb.so" >> /etc/php/7.4/apache2/conf.d/30-mongodb.ini
 RUN echo "extension=mongodb.so" >> /etc/php/7.4/cli/conf.d/30-mongodb.ini
-
-# install sqlsrv
-RUN pecl install sqlsrv
-RUN pecl install pdo_sqlsrv
-
-# add extension info to ini files
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
-RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
-RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
-
-RUN phpenmod sqlsrv pdo_sqlsrv
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
