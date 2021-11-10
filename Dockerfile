@@ -28,6 +28,8 @@ RUN apt-get -qqy install php-pear php mcrypt php-dev php-cli php-mysql php-sqlit
 
 RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 
+RUN phpenmod pdo_pgsql
+
 # MongoDB support
 RUN pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
     
@@ -74,6 +76,9 @@ RUN chmod 0644 /etc/cron.d/dbface
 
 # Create the log file to be able to run tail
 RUN touch /var/www/user/logs/cronlog.log
+
+# install puppeteer
+RUN cd /var/www/html/config && npm install puppeteer
 
 # Run
 ADD conf/scripts/startup.sh /usr/bin/startup_container
