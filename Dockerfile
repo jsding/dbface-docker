@@ -7,6 +7,8 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
+RUN add-apt-repository ppa:ondrej/php -y
+
 # Setup system and install tools
 RUN apt-get update && apt-get -qqy install passwd sudo unzip wget curl cron apt-transport-https gnupg2
 
@@ -34,20 +36,21 @@ RUN phpenmod pdo_pgsql
 RUN pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
     
 # install sqlsrv
-# RUN pecl install sqlsrv
-# RUN pecl install pdo_sqlsrv
+RUN pecl install sqlsrv
+RUN pecl install pdo_sqlsrv
+
+# add extension info to ini files
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
+RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
+
+RUN phpenmod sqlsrv pdo_sqlsrv
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
 RUN a2enmod php7.4
 
-# SQL Server Support
-# add extension info to ini files
-# RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
-# RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
-
-# RUN echo "extension=pdo_sqlsrv.so" >> /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
-# RUN echo "extension=sqlsrv.so" >> /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
 
 # install locales (sqlcmd will have a fit if you don't have this)
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
