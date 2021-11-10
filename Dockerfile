@@ -36,8 +36,11 @@ RUN apt-get -qqy install libssl-dev pkg-config libaio-dev
 RUN phpenmod pdo_pgsql
 
 # MongoDB support
-RUN pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/7.4/cli/php.ini && echo "extension=mongodb.so" >> /etc/php/7.4/apache2/php.ini
+RUN pecl install mongodb
     
+RUN echo "extension=mongodb.so" >> /etc/php/7.4/apache2/conf.d/30-mongodb.ini
+RUN echo "extension=mongodb.so" >> /etc/php/7.4/cli/conf.d/30-mongodb.ini
+
 # install sqlsrv
 RUN pecl install sqlsrv
 RUN pecl install pdo_sqlsrv
