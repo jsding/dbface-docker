@@ -60,7 +60,6 @@ RUN mkdir /var/www/logs
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/user 
 
-
 # crontab
 # steup crontab 5min
 # Add crontab file in the cron directory
