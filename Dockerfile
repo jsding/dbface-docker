@@ -1,7 +1,7 @@
 # DbFace On-premises
 #
-# VERSION 10 (20211110)
-FROM ubuntu:20.04
+# VERSION 12 (20220910)
+FROM ubuntu:22.04
 
 # Upgrade system
 ENV DEBIAN_FRONTEND noninteractive
