@@ -33,8 +33,8 @@ RUN phpenmod pdo_pgsql
 # MongoDB support
 RUN pecl install mongodb
     
-RUN echo "extension=mongodb.so" >> /etc/php/7.4/apache2/conf.d/30-mongodb.ini
-RUN echo "extension=mongodb.so" >> /etc/php/7.4/cli/conf.d/30-mongodb.ini
+RUN echo "extension=mongodb.so" >> /etc/php/8.1/apache2/conf.d/30-mongodb.ini
+RUN echo "extension=mongodb.so" >> /etc/php/8.1/cli/conf.d/30-mongodb.ini
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
@@ -49,11 +49,11 @@ RUN cd /var/www && \
     wget https://dbface.oss-us-east-1.aliyuncs.com/ioncube_loaders_lin_x86-64.tar.gz && \
     tar zxvf ioncube_loaders_lin_x86-64.tar.gz && \
     rm ioncube_loaders_lin_x86-64.tar.gz && \
-    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/apache2/php.ini && \
-    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_7.4.so" >> /etc/php/7.4/cli/php.ini
+    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_8.1.so" >> /etc/php/8.1/apache2/php.ini && \
+    echo "zend_extension = /var/www/ioncube/ioncube_loader_lin_8.1.so" >> /etc/php/8.1/cli/php.ini
     
 RUN rm -rf /var/www/index.html
-RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php7.2.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
+RUN wget https://dbface.oss-us-east-1.aliyuncs.com/v9/dbface_php8.1.zip -O /tmp/dbfacephp.zip && unzip -d /var/www /tmp/dbfacephp.zip && rm /tmp/dbfacephp.zip
 
 RUN mkdir /var/www/logs
 
