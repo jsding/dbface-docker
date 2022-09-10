@@ -38,7 +38,7 @@ RUN echo "extension=mongodb.so" >> /etc/php/7.4/cli/conf.d/30-mongodb.ini
 
 RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
-RUN a2enmod php7.4
+RUN a2enmod php8.1
 
 
 # install locales (sqlcmd will have a fit if you don't have this)
