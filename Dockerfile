@@ -40,6 +40,7 @@ RUN a2dismod mpm_event
 RUN a2enmod mpm_prefork
 RUN a2enmod php8.1
 
+RUN echo "Mutex posixsem" >> /etc/apache2/apache2.conf
 
 # install locales (sqlcmd will have a fit if you don't have this)
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
